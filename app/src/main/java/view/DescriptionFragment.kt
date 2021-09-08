@@ -1,4 +1,4 @@
-package com.example.moviedb.ui.main
+package view
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,28 +6,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.example.moviedb.MainActivity
-import com.example.moviedb.R
-import com.example.moviedb.databinding.MainFragmentBinding
+import com.example.moviedb.databinding.DescriptionFragmentBinding
+import viewModel.AppAction
 import com.google.android.material.snackbar.Snackbar
+import viewModel.MainViewModel
 
-class MainFragment : Fragment() {
+class DescriptionFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = DescriptionFragment()
     }
 
     private lateinit var viewModel: MainViewModel
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: DescriptionFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = DescriptionFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
@@ -52,7 +51,7 @@ class MainFragment : Fragment() {
                 binding.synopsis.text = movieData.synopsis
                 binding.rating.text = "${(movieData.rating)} из 5"
                 binding.year.text = (movieData.year).toString()
-                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.descriptionMovieView, "Success", Snackbar.LENGTH_LONG).show()
             }
             is AppAction.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
@@ -60,7 +59,7 @@ class MainFragment : Fragment() {
             is AppAction.Error -> {
                 binding.loadingLayout.visibility = View.GONE
                 Snackbar
-                    .make(binding.mainView, "Error", Snackbar.LENGTH_INDEFINITE)
+                    .make(binding.descriptionMovieView, "Error", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Reload") { viewModel.getMovieFromLocalSource() }
                     .show()
             }

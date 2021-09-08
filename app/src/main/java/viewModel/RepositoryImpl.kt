@@ -1,6 +1,9 @@
-package com.example.moviedb.ui.main
+package viewModel
 
-class RepositoryImpl:Repository {
+import model.MovieData
+import model.Repository
+
+class RepositoryImpl: Repository {
     override fun getMovieFromServer(): MovieData {
      return MovieData()
     }

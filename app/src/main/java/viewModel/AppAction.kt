@@ -1,4 +1,6 @@
-package com.example.moviedb.ui.main
+package viewModel
+
+import model.MovieData
 
 sealed class AppAction {
         data class Success(val movieData: MovieData) : AppAction()

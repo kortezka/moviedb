@@ -1,9 +1,8 @@
-package com.example.moviedb.ui.main
+package viewModel
 
-import android.widget.EditText
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import model.MovieData
 import java.lang.Thread.sleep
 
 
