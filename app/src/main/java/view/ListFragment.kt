@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedb.R
@@ -20,18 +21,13 @@ import com.google.android.material.snackbar.Snackbar
 import viewModel.AppAction
 
 
-/**
- * A fragment representing a list of Items.
- */
-class ListFragment : Fragment() {
+class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        arguments?.let {
-//            columnCount = it.getInt(ARG_COLUMN_COUNT)
-//        }
+
     }
 
     private lateinit var viewModel: MainViewModel
@@ -61,8 +57,8 @@ class ListFragment : Fragment() {
         bestMovie.layoutManager = layoutManager2
 
 
-        someMovie.adapter = MyItemRecyclerViewAdapter(movie)
-        bestMovie.adapter = MyItemRecyclerViewAdapter(movie2)
+        someMovie.adapter = MyItemRecyclerViewAdapter(movie,this)
+        bestMovie.adapter = MyItemRecyclerViewAdapter(movie2,this)
 
         someMovie.isNestedScrollingEnabled = false
         bestMovie.isNestedScrollingEnabled = false
@@ -108,5 +104,15 @@ class ListFragment : Fragment() {
                 arguments = Bundle().apply {
                 }
             }
+    }
+
+    override fun onCellClick(movieData: MovieData) {
+        val fragment = DescriptionFragment.newInstance(movieData)
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.container, fragment)
+            .commit()
+
     }
 }
