@@ -2,14 +2,8 @@ package view
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import com.example.moviedb.R
-import com.example.moviedb.databinding.DescriptionFragmentBinding
 import com.example.moviedb.databinding.MovieItemBinding
-import com.example.moviedb.databinding.MovieItemListBinding
 import model.MovieData
 
 
@@ -45,15 +39,9 @@ class MyItemRecyclerViewAdapter(
 
         fun setMovieToViewHolder(movie: MovieData) {
 
-            binding.Name.text = movie.name
+            binding.Name.text = movie.title
             binding.genre.text = movie.genre
-//            itemView. {
-//                Toast.makeText(
-//                    itemView.context,
-//                   "fff",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//            }
+//      }
         }
     }
 }

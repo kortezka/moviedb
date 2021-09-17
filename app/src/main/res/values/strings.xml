@@ -8,4 +8,8 @@
     <string name="someMovies">Все подряд</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fail">БЕДА</string>
+    <string name="internet_fail">нет интeрнета</string>
+    <string name="refresh">обновить</string>
+    <string name="back">назад</string>
 </resources>

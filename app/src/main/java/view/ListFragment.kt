@@ -107,6 +107,7 @@ class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
     }
 
     override fun onCellClick(movieData: MovieData) {
+
         val fragment = DescriptionFragment.newInstance(movieData)
         requireActivity().supportFragmentManager
             .beginTransaction()

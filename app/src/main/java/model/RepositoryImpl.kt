@@ -1,4 +1,4 @@
-package viewModel
+package model
 
 import model.MovieData
 import model.Repository

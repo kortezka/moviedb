@@ -8,7 +8,6 @@
     android:layout_height="match_parent">
 
 
-
     <TextView
         android:id="@+id/Name"
         android:layout_width="wrap_content"
@@ -25,57 +24,55 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="263dp"
-        android:layout_height="342dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="183dp"
+        android:layout_height="268dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Name"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/synopsis"
-        android:layout_width="203dp"
-        android:layout_height="163dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="187dp"
+        android:layout_height="298dp"
         android:ems="10"
         android:gravity="start|top"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.302"
         tools:text="@tools:sample/lorem/random" />
 
     <TextView
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="144dp"
         android:text="@string/year"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toEndOf="@+id/synopsis"
-        app:layout_constraintTop_toBottomOf="@+id/rating"
-        app:layout_constraintVertical_bias="0.266" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rating" />
 
     <TextView
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:layout_marginEnd="308dp"
         android:text="@string/rating"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.446"
-        app:layout_constraintStart_toEndOf="@+id/synopsis"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.004"></TextView>
+        app:layout_constraintVertical_bias="0.274"></TextView>
 
     <TextView
         android:id="@+id/genre"
@@ -87,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.939"
         app:layout_constraintStart_toStartOf="parent" />
-    <FrameLayout
+     <FrameLayout
         android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
