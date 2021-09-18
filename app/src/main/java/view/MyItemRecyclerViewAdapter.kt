@@ -9,7 +9,8 @@ import model.MovieData
 
 class MyItemRecyclerViewAdapter(
     private val movieAdapterValue: List<MovieData>,
-    private  val cellClickListener: CellClickListener) :
+    private val cellClickListener: CellClickListener
+) :
     RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
 
@@ -34,7 +35,8 @@ class MyItemRecyclerViewAdapter(
         fun onCellClick(movie: MovieData)
     }
 
-    inner class ViewHolder(private val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: MovieItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
 
         fun setMovieToViewHolder(movie: MovieData) {

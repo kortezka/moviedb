@@ -1,24 +1,118 @@
 package view
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.moviedb.R
 import com.example.moviedb.databinding.DescriptionFragmentBinding
-import model.MovieDTO
-import model.MovieData
-import model.MovieLoader
+import model.*
+import viewModel.AppAction
+import java.lang.Thread.sleep
+import java.time.Year
+import android.text.method.ScrollingMovementMethod
 
 
-private const val ARG = "param1"
+const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
+const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
+const val DETAILS_INTENT_EMPTY_EXTRA = "INTENT IS EMPTY"
+const val DETAILS_RESPONSE_EMPTY_EXTRA = "RESPONSE IS EMPTY"
+const val DETAILS_REQUEST_ERROR_EXTRA = "REQUEST ERROR"
+const val DETAILS_REQUEST_ERROR_MESSAGE_EXTRA = "REQUEST ERROR MESSAGE"
+const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
+const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
+const val DETAILS_OVERWIEW_EXTRA = "OVERWIEW"
+const val DETAILS_RATING_EXTRA = "RATING"
+const val DETAILS_YEAR_EXTRA = "YEAR"
+const val DETAILS_TITLE_EXTRA = "TITLE"
+const val DETAILS_ID_EXTRA = "ID"
+private const val PROCESS_ERROR = "Обработка ошибки"
+
+private const val ARG = "ARG"
 
 
 class DescriptionFragment : Fragment() {
 
+    private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
 
-    //  private var movieData: MovieData? = null
+            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
+                DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_RESPONSE_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_REQUEST_ERROR_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_URL_MALFORMED_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_RESPONSE_SUCCESS_EXTRA -> renderData(
+
+                    MovieDTO(
+
+                        intent.getStringExtra(DETAILS_TITLE_EXTRA),
+                        intent.getDoubleExtra(DETAILS_RATING_EXTRA, 0.0),
+                        intent.getStringExtra(DETAILS_OVERWIEW_EXTRA),
+                        intent.getStringExtra(DETAILS_YEAR_EXTRA),
+                        intent.getIntExtra(DETAILS_ID_EXTRA, 0)
+
+
+                    )
+                )
+
+                else -> TODO(PROCESS_ERROR)
+            }
+        }
+    }
+    private lateinit var movieData: MovieData
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        context?.let {
+            LocalBroadcastManager.getInstance(it)
+                .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
+        }
+    }
+
+    private fun getMovie() {
+        binding.descriptionMovieView.visibility = View.GONE
+        binding.loadingLayout.visibility = View.VISIBLE
+        context?.let {
+            it.startService(Intent(it, LoadingInternetService::class.java).apply {
+                putExtra(
+                    MOVIEID_EXTRA,
+                    movieData.id
+                )
+
+            })
+        }
+    }
+
+    private fun renderData(movie: MovieDTO) {
+        binding.descriptionMovieView.visibility = View.VISIBLE
+        binding.loadingLayout.visibility = View.GONE
+
+        val title = movie.title
+        val overview = movie.overview
+        val rating = movie.vote_average
+        val year = movie.release_date?.dropLast(6)
+        if (title == null ||
+            overview == null ||
+            rating == 0.0 ||
+            year == null
+        ) {
+            TODO("Обработка ошибки")
+        } else {
+           binding.synopsis.movementMethod = ScrollingMovementMethod()
+            binding.Name.text = title
+            binding.synopsis.text = overview
+            binding.rating.text = rating.toString()
+            binding.year.text = year
+        }
+
+    }
 
     companion object {
 
@@ -34,130 +128,53 @@ class DescriptionFragment : Fragment() {
     private var _binding: DescriptionFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val onLoadListener: MovieLoader.MovieLoaderListener =
-        object : MovieLoader.MovieLoaderListener {
-
-            override fun onLoaded(weatherDTO: MovieDTO) {
-                displayMovie(weatherDTO)
-            }
-
-            override fun onFailed(throwable: Throwable,movieID:Int) {
-
-
-                val fragment = Error.newInstance(movieID)
-                requireActivity().supportFragmentManager
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.container, fragment)
-                    .commit()
-
-            }
-
-            override fun onFailed(throwable: Throwable) {
-                requireActivity().supportFragmentManager.popBackStack();
-                val fragment = Error.newInstance()
-
-                requireActivity().supportFragmentManager
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.container, fragment)
-                    .commit()
-
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = DescriptionFragmentBinding.inflate(inflater, container, false)
+
         val view = binding.root
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val movieData = arguments?.getParcelable<MovieData>(ARG)
-        if (movieData != null) {
-            binding.loadingLayout.visibility = View.GONE
-            //  binding.Name.text = movieData.title
-            binding.genre.text = movieData.genre
-            val loader = MovieLoader(movieData.id, onLoadListener)
-            loader.toInternet()
-        }
+
+        movieData = arguments?.getParcelable(ARG) ?: MovieData()
+        //if (movieData != null) {
+        //  binding.loadingLayout.visibility = View.GONE
+        //binding.genre.text = movieData.genre
+        //    val loader = MovieLoader(movieData.id, onLoadListener)
+        //     loader.toInternet()
+        getMovie()
+        //}
 
 
     }
 
-    fun displayMovie(movie: MovieDTO) {
-        binding.Name.text = movie.title
-        binding.synopsis.text = movie.overview
-        binding.rating.text = movie.vote_average.toString()
-        binding.year.text = movie.release_date.dropLast(6)
-    }
-
-//    fun toInternet() {
-//
-//        val url =
-//            URL("https://api.themoviedb.org/3/movie/100?api_key=43bc1342e84cdac28c1e4d846b7d8be6&language=ru-RU")
-//        val handler = Handler()
-//        Thread(Runnable {
-////        val mainHandler = Handler(Looper.getMainLooper())
-////        val handlerThread = HandlerThread("HandlerThread")
-////        handlerThread.start()
-//
-////        val backgroundHandler = Handler(handlerThread.looper, Handler.Callback {
-//
-//        var urlConnection = url.openConnection() as HttpsURLConnection
-//        urlConnection.requestMethod = "GET"
-//        urlConnection.connectTimeout = 1000
-//        val inf = BufferedReader(InputStreamReader(urlConnection.inputStream))
-//        val result = inf.lines().collect(Collectors.joining("/n"))
-//        val movieDTO: MovieDTO = Gson().fromJson(result, MovieDTO::class.java)
-//        handler.post{displayMovie(movieDTO)}
-//        //   requireActivity().runOnUiThread {
-//
-//        //}
-//
-//        //           mainHandler.post {
-//        //           displayMovie(movieDTO)
-//    }).start()
-//
-//    //         true
-//    //    })
-//}
-
-
-//    private fun renderData(data: AppAction) {
-//        when (data) {
-//            is AppAction.Success -> {
-//                val movieData = data.movieData
-//                binding.loadingLayout.visibility = View.GONE
-//                binding.Name.text = movieData.title
-//                binding.genre.text = movieData.genre
-//                binding.synopsis.text = movieData.synopsis
-//                binding.rating.text = "${(movieData.rating)} из 5"
-//                binding.year.text = (movieData.year).toString()
-//                Snackbar.make(binding.descriptionMovieView, "Success", Snackbar.LENGTH_LONG).show()
-//            }
-//            is AppAction.Loading -> {
-//                binding.loadingLayout.visibility = View.VISIBLE
-//            }
-//            is AppAction.Error -> {
-//                binding.loadingLayout.visibility = View.GONE
-//                Snackbar
-//                    .make(binding.descriptionMovieView, "Error", Snackbar.LENGTH_INDEFINITE)
-//                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
-//                    .show()
-//            }
-//        }
+//    fun displayMovie(movie: MovieDTO) {
+//        binding.Name.text = movie.title
+//        binding.synopsis.text = movie.overview
+//        binding.rating.text = movie.vote_average.toString()
+//        binding.year.text = movie.release_date?.dropLast(6)
 //    }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
+
         _binding = null
+
     }
 
+    override fun onDestroy() {
+        context?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
+        }
+        super.onDestroy()
+    }
 }
 

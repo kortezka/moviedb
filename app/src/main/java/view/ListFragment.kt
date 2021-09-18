@@ -21,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import viewModel.AppAction
 
 
-class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
+class ListFragment : Fragment(), MyItemRecyclerViewAdapter.CellClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +57,8 @@ class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
         bestMovie.layoutManager = layoutManager2
 
 
-        someMovie.adapter = MyItemRecyclerViewAdapter(movie,this)
-        bestMovie.adapter = MyItemRecyclerViewAdapter(movie2,this)
+        someMovie.adapter = MyItemRecyclerViewAdapter(movie, this)
+        bestMovie.adapter = MyItemRecyclerViewAdapter(movie2, this)
 
         someMovie.isNestedScrollingEnabled = false
         bestMovie.isNestedScrollingEnabled = false
@@ -76,24 +76,24 @@ class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
 
 
     private fun renderData(data: AppAction) {
-        when (data) {
-            is AppAction.Success -> {
-
-                binding.loadingLayout.visibility = View.GONE
-
-                Snackbar.make(binding.itemContainer, "Success", Snackbar.LENGTH_LONG).show()
-            }
-            is AppAction.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-            }
-            is AppAction.Error -> {
-                binding.loadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(binding.itemContainer, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
-                    .show()
-            }
-        }
+//        when (data) {
+//            is AppAction.Success -> {
+//
+//                binding.loadingLayout.visibility = View.GONE
+//
+//                Snackbar.make(binding.itemContainer, "Success", Snackbar.LENGTH_LONG).show()
+//            }
+//            is AppAction.Loading -> {
+//                binding.loadingLayout.visibility = View.VISIBLE
+//            }
+//            is AppAction.Error -> {
+//                binding.loadingLayout.visibility = View.GONE
+//                Snackbar
+//                    .make(binding.itemContainer, "Error", Snackbar.LENGTH_INDEFINITE)
+//                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
+//                    .show()
+//            }
+//        }
     }
 
     companion object {
