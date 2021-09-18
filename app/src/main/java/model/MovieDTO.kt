@@ -7,6 +7,6 @@ data class MovieDTO(
     val vote_average: Double,
     val overview: String,
     val release_date: String,
-    val id:Int
+    val id: Int
 ) {
 }

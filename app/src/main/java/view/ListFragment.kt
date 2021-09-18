@@ -21,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import viewModel.AppAction
 
 
-class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
+class ListFragment : Fragment(), MyItemRecyclerViewAdapter.CellClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +57,8 @@ class ListFragment : Fragment(),MyItemRecyclerViewAdapter.CellClickListener {
         bestMovie.layoutManager = layoutManager2
 
 
-        someMovie.adapter = MyItemRecyclerViewAdapter(movie,this)
-        bestMovie.adapter = MyItemRecyclerViewAdapter(movie2,this)
+        someMovie.adapter = MyItemRecyclerViewAdapter(movie, this)
+        bestMovie.adapter = MyItemRecyclerViewAdapter(movie2, this)
 
         someMovie.isNestedScrollingEnabled = false
         bestMovie.isNestedScrollingEnabled = false

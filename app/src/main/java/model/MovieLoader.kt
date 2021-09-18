@@ -20,7 +20,7 @@ class MovieLoader(private val movieId: Int, private val listener: MovieLoaderLis
             val url =
                 URL("https://api.themoviedb.org/3/movie/$movieId?api_key=43bc1342e84cdac28c1e4d846b7d8be6&language=ru-RU")
 
-           internetMagic(url)
+            internetMagic(url)
         } catch (e: MalformedURLException) {
             Log.e("", "Fail URI", e)
             e.printStackTrace()
@@ -28,7 +28,8 @@ class MovieLoader(private val movieId: Int, private val listener: MovieLoaderLis
         }
 
     }
-    fun internetMagic(url: URL){
+
+    fun internetMagic(url: URL) {
         val handler = Handler()
         Thread {
 

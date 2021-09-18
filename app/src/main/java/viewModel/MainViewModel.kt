@@ -7,9 +7,9 @@ import java.lang.Thread.sleep
 
 
 class MainViewModel(private val liveDataToObserve: MutableLiveData<AppAction> = MutableLiveData()) :
-        ViewModel() {
+    ViewModel() {
 
-        fun getLiveData() = liveDataToObserve
+    fun getLiveData() = liveDataToObserve
 
     fun getMovieFromLocalSource() = getDataFromLocalSource()
     fun getMovieFromRemote() = getDataFromLocalSource()
