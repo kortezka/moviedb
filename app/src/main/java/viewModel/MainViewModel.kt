@@ -1,16 +1,15 @@
-package com.example.moviedb.ui.main
+package viewModel
 
-import android.widget.EditText
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import model.MovieData
 import java.lang.Thread.sleep
 
 
 class MainViewModel(private val liveDataToObserve: MutableLiveData<AppAction> = MutableLiveData()) :
-        ViewModel() {
+    ViewModel() {
 
-        fun getLiveData() = liveDataToObserve
+    fun getLiveData() = liveDataToObserve
 
     fun getMovieFromLocalSource() = getDataFromLocalSource()
     fun getMovieFromRemote() = getDataFromLocalSource()
